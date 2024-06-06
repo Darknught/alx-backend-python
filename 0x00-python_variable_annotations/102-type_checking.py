@@ -9,14 +9,14 @@ def zoom_array(lst: Tuple, factor: int = 2) -> List:
     repeating each element 'factor' times.
 
     Args:
-        lst (List[int]): The list of integers to be zoomed in.
+        lst (Tuple): The list of integers to be zoomed in.
         factor (int, optional): The number of times each element
         should be repeated. Defaults to 2.
 
     Returns:
-        List[int]: A new list with each element repeated 'factor' times.
+        List: A new list with each element repeated 'factor' times.
     """
-    zoomed_in: Tuple = [
+    zoomed_in: List = [
         item for item in lst
         for i in range(factor)
     ]
@@ -24,7 +24,7 @@ def zoom_array(lst: Tuple, factor: int = 2) -> List:
 
 
 # Define a list of integers
-array: List[int] = [12, 72, 91]
+array: Tuple[int, ...] = [12, 72, 91]
 
 # Create a zoomed-in version of the array with each element repeated twice
 zoom_2x = zoom_array(array)
