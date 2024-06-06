@@ -1,7 +1,8 @@
-#!/usr/bin/python3
+#!/usr/bin/env python3
 """ Module that defines a function that adds two floats."""
 
 
 def add(a: float, b: float):
-    """ Function initialization"""
+    """ Annotated Function that returns the sum of two floats
+    """
     return a + b
