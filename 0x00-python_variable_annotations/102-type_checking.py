@@ -1,9 +1,9 @@
 #!/usr/bin/env python3
 """ Using mypy to validate the code below."""
-from typing import List
+from typing import List, Tuple
 
 
-def zoom_array(lst: List[int], factor: int = 2) -> List[int]:
+def zoom_array(lst: Tuple, factor: int = 2) -> List:
     """
     Creates a zoomed-in version of the input list by
     repeating each element 'factor' times.
@@ -16,7 +16,7 @@ def zoom_array(lst: List[int], factor: int = 2) -> List[int]:
     Returns:
         List[int]: A new list with each element repeated 'factor' times.
     """
-    zoomed_in: List[int] = [
+    zoomed_in: Tuple = [
         item for item in lst
         for i in range(factor)
     ]
