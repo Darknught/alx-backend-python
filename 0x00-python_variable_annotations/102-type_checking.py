@@ -3,7 +3,7 @@
 from typing import List, Tuple, Any
 
 
-def zoom_array(lst: Tuple, factor: int = 2) -> List:
+def zoom_array(lst: List[int], factor: int = 2) -> List:
     """
     Creates a zoomed-in version of the input list by
     repeating each element 'factor' times.
@@ -24,7 +24,7 @@ def zoom_array(lst: Tuple, factor: int = 2) -> List:
 
 
 # Define a list of integers
-array: Tuple = [12, 72, 91]
+array: List[int] = [12, 72, 91]
 
 # Create a zoomed-in version of the array with each element repeated twice
 zoom_2x = zoom_array(array)
