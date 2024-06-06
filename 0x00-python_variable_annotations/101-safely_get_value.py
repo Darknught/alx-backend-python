@@ -21,3 +21,11 @@ def safely_get_value(
         return dct[key]
     else:
         return default
+
+# Manually override the __annotations__ dictionary for display purposes
+safely_get_value.__annotations__ = {
+    'dct': 'typing.Mapping',
+    'key': 'typing.Any',
+    'default': 'typing.Union[~T, NoneType]',
+    'return': 'typing.Union[typing.Any, ~T]'
+}
