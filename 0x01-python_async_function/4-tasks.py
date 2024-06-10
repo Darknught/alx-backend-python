@@ -12,13 +12,13 @@ async def task_wait_n(n: int, max_delay: int) -> List[float]:
     """
     # Dynamic import of wait_random from basic_async_syntax.py
     spec = importlib.util.spec_from_file_location(
-            "basic_async_syntax", "0-basic_async_syntax.py")
-    basic_async_syntax = importlib.util.module_from_spec(spec)
-    spec.loader.exec_module(basic_async_syntax)
-    wait_random = basic_async_syntax.wait_random
+            "tasks", "3-tasks.py")
+    tasks = importlib.util.module_from_spec(spec)
+    spec.loader.exec_module(tasks)
+    task_wait_random = tasks.task_wait_random
 
-    tasks = [wait_random(max_delay) for _ in range(n)]
-    delays = await asyncio.gather(*tasks)
+    task = [task_wait_random(max_delay) for _ in range(n)]
+    delays = await asyncio.gather(*task)
 
     # Sorts the list without using sort()
     sorted_delays = []
