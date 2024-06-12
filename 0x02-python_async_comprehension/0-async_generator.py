@@ -2,10 +2,10 @@
 """ A coroutine that takes no arg and generate a random number"""
 import asyncio
 import random
-from typing import AsyncGenerator
+from typing import Generator
 
 
-async def async_generator() -> AsyncGenerator[float, None]:
+async def async_generator() -> Generator[float, None, None]:
     """ takes in one arg and loop 10 times, wait 1 second then yield
     a random number btw 0 and 10.
     """
