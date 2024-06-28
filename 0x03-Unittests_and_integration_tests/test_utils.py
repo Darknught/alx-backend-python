@@ -2,7 +2,8 @@
 """ A Function that test the utils.py file."""
 import unittest
 from parameterized import parameterized
-from utils import access_nested_map
+from utils import access_nested_map, get_json
+from unittest.mock import patch, Mock
 
 
 class TestAccessNestedMap(unittest.TestCase):
@@ -46,6 +47,42 @@ class TestAccessNestedMap(unittest.TestCase):
         with self.assertRaises(KeyError) as context:
             access_nested_map(nested_map, path)
         self.assertEqual(str(context.exception), expected_exception)
+
+
+class TestGetJson(unittest.TestCase):
+    """
+    Test class for the get_json function from the utils module.
+    Inherits from unittest.TestCase.
+    """
+    @parameterized.expand([
+        ("http://example.com", {"payload": True}),
+        ("http://holberton.io", {"payload": False})
+    ])
+    @patch("utils.requests.get")
+    def test_get_json(self, test_url, test_payload, mock_get):
+        """
+        Test the get_json function with different inputs.
+
+        Parameters:
+        test_url (str): The URL to be passed to the get_json function.
+        test_payload (dict): The expected JSON payload returned by the
+        mocked requests.get.
+        mock_get (Mock): The mocked requests.get method.
+        """
+
+        # Create a mock response object with a json method
+        mock_response = Mock()
+        mock_response.json.return_value = test_payload
+        mock_get.return_value = mock_response
+
+        # Call the get_json function with the test URL
+        result = get_json(test_url)
+
+        # Assert that requests.get was called once with the test URL
+        mock_get.assert_called_once_with(test_url)
+
+        # Assert that the result is equal to the expected payload
+        self.assertEqual(result, test_payload)
 
 
 if __name__ == "__main__":
