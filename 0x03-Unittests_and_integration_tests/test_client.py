@@ -176,6 +176,27 @@ class TestIntegrationGithubOrgClient(unittest.TestCase):
         self.assertEqual(client.public_repos(), self.expected_repos)
         self.assertEqual(client.public_repos("apache-2.0"), self.apache2_repos)
 
+    @patch('client.requests.get')
+    def test_public_repos(self, mock_get):
+        """ test GithubOrgClient.public_repos."""
+        mock_get.return_value.json.return_value = fixtures.repos_payload
+
+        client = GithubOrgClient("testorg")
+        repos = client.public_repos()
+
+        self.assertEquak(
+                repos, [repo["name"] for repo in fixtures.repos_payload])
+
+    @patch('client.requests.get')
+    def test_public_repos_with_license(self, mock_get):
+        """ Test GithubOrgClient.public_repos with license filter."""
+        mock_get.return_value.json.return_value = fixtures.repos_payload
+
+        client = GithubOrgClient("testorg")
+        repos = client.public_repos(license="apache-2.0")
+
+        self.assertEqual(repos, fixtures.apache2_repos)
+
 
 if __name__ == "__main__":
     unittest.main()
