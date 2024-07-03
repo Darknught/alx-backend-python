@@ -98,21 +98,12 @@ class TestMemoize(unittest.TestCase):
         """
 
         class TestClass:
-            """
-            A test class to demonstrate the memoize decorator.
-            """
 
             def a_method(self):
-                """
-                A method that returns 42.
-                """
                 return 42
 
             @memoize
             def a_property(self):
-                """
-                A property that calls a_method and returns its result.
-                """
                 return self.a_method()
 
         with patch.object(

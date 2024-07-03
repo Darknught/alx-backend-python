@@ -4,7 +4,7 @@ import unittest
 from unittest.mock import patch, PropertyMock, Mock
 from parameterized import parameterized, parameterized_class
 from client import GithubOrgClient
-import fixtures
+from fixtures import org_payload, repos_payload, expected_repos, apache2_repos
 
 
 class TestGithubOrgClient(unittest.TestCase):
@@ -128,10 +128,10 @@ class TestGithubOrgClient(unittest.TestCase):
 
 @parameterized_class([
     {
-        "org_payload": fixtures.org_payload,
-        "repos_payload": fixtures.repos_payload,
-        "expected_repos": fixtures.expected_repos,
-        "apache2_repos": fixtures.apache2_repos
+        "org_payload": org_payload,
+        "repos_payload": repos_payload,
+        "expected_repos": expected_repos,
+        "apache2_repos": apache2_repos
     }
 ])
 class TestIntegrationGithubOrgClient(unittest.TestCase):
@@ -146,27 +146,31 @@ class TestIntegrationGithubOrgClient(unittest.TestCase):
         """
         Set up class method to start a patcher for requests.get.
         """
-        cls.get_patcher = patch(
-                'request.get', side_effect=cls.get_json_side_effect)
+        cls.get_patcher = patch('requests.get')
         cls.mock_get = cls.get_patcher.start()
+
+        def side_effect(url):
+            """ Method to check the side effect."""
+            if url.endswith('orgs/test-org'):
+                return cls.mock_response(org_payload)
+            elif url.endswith('orgs/test-org/repos'):
+                return cls.mock_response(repos_payload)
+            else:
+                raise ValueError(f'Unexpected URL: {url}')
+
+        cls.mock_get.side_effect = side_effect
+
+    @staticmethod
+    def mock_response(payload):
+        """ Method to mock responses."""
+        response = unittest.mock.Mock()
+        response.json.return_value = payload
+        return response
 
     @classmethod
     def tearDownClass(cls):
-        """
-        Tear down class method to stop the patcher.
-        """
+        """ Method to tear down."""
         cls.get_patcher.stop()
-
-    @staticmethod
-    def get_json_side_effect(url):
-        """
-        Side effect method to mock the behavior of requests.get().json().
-        """
-        if url == f"https://api.github.com/orgs/test_org":
-            return TestIntegrationGithubOrgClient.org_payload
-        if url == TestIntegrationGithubOrgClient.org_payload["repos_url"]:
-            return TestIntegrationGithubOrgClient.repos_payload
-        return None
 
     def test_public_repos(self):
         """
